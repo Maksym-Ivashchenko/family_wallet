@@ -16,41 +16,41 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final UserConverter userConverter;
+    private final UserRepository repository;
+    private final UserConverter converter;
     private final BCryptPasswordEncoder passwordEncoder;
 
     public List<UserDto> findAll() {
-        return userRepository.findAll(Sort.by("email"))
+        return repository.findAll(Sort.by("email"))
                 .stream()
-                .map(userConverter::mapToDto)
+                .map(converter::mapToDto)
                 .collect(Collectors.toList());
     }
 
     public UserDto getId(UUID uuid) {
-        return userRepository.findById(uuid)
-                .map(userConverter::mapToDto)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return repository.findById(uuid)
+                .map(converter::mapToDto)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public void create(UserDto dto) {
-        userRepository.save(userConverter.mapToDao(dto));
+        repository.save(converter.mapToDao(dto));
     }
 
     public void update(UUID uuid, UserDto dto) {
         dto.setId(uuid);
-        userRepository.findById(uuid)
-                .map((p)->userRepository.save(userConverter.mapToDao(dto)))
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        repository.findById(uuid)
+                .map((p) -> repository.save(converter.mapToDao(dto)))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public void delete(UUID uuid) {
-        userRepository.deleteById(uuid);
+        repository.deleteById(uuid);
     }
 
-    public UserDto findByEmail(String email){
-        return userRepository.findByEmail(email)
-                .map(userConverter::mapToDto)
+    public UserDto findByEmail(String email) {
+        return repository.findByEmail(email)
+                .map(converter::mapToDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
@@ -60,6 +60,6 @@ public class UserService {
     }
 
     public boolean isExistEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return repository.existsByEmail(email);
     }
 }
