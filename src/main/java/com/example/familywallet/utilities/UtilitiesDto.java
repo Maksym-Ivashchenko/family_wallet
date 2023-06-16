@@ -1,7 +1,6 @@
-package com.example.familywallet.purchase;
+package com.example.familywallet.utilities;
 
 import com.example.familywallet.user.UserDto;
-import com.example.familywallet.utilities.UtilitiesDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +8,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class PurchaseDto {
+public class UtilitiesDto {
 
     private UUID uuid;
     private String name;
@@ -17,6 +16,5 @@ public class PurchaseDto {
     private Integer amount;
     private Integer total;
     private UserDto user;
-    private UtilitiesDto utilities;
 
 }

@@ -1,22 +1,22 @@
-package com.example.familywallet.purchase;
+package com.example.familywallet.utilities;
 
 import com.example.familywallet.user.User;
-import com.example.familywallet.utilities.Utilities;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "purchases")
+@Table(name = "utilities")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Purchase {
+public class Utilities {
 
     @Id
     @GeneratedValue
@@ -24,7 +24,7 @@ public class Purchase {
     @JdbcTypeCode(SqlTypes.UUID)
     private UUID uuid;
 
-    @Column(name = "purchase_name", nullable = false, unique = true)
+    @Column(name = "utilities_name", nullable = false, unique = true)
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private String name;
 
@@ -40,13 +40,9 @@ public class Purchase {
     @JdbcTypeCode(SqlTypes.INTEGER)
     private Integer total;
 
-    @ManyToMany(mappedBy = "purchases", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "utilities", fetch = FetchType.LAZY)
     @ToString.Exclude
     private User user;
-
-    @ManyToMany(mappedBy = "purchases", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private Utilities utilities;
 
     @Override
     public String toString() {
@@ -56,18 +52,17 @@ public class Purchase {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Purchase purchase)) return false;
-        return Objects.equals(uuid, purchase.uuid) &&
-                Objects.equals(name, purchase.name) &&
-                Objects.equals(cost, purchase.cost) &&
-                Objects.equals(amount, purchase.amount) &&
-                Objects.equals(total, purchase.total) &&
-                Objects.equals(user, purchase.user) &&
-                Objects.equals(utilities, purchase.utilities);
+        if (!(o instanceof Utilities utilities)) return false;
+        return Objects.equals(uuid, utilities.uuid) &&
+                Objects.equals(name, utilities.name) &&
+                Objects.equals(cost, utilities.cost) &&
+                Objects.equals(amount, utilities.amount) &&
+                Objects.equals(total, utilities.total) &&
+                Objects.equals(user, utilities.user);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(uuid, name, cost, amount, total, user);
     }
 }
